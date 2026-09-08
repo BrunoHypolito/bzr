@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Cores de base da interface. */
+  --bg-base: #f8fafc;
+  --surface: #ffffff;
+  --border: #e2e8f0;
+  
+  /* Cores usadas para texto, destaque e estados da interface. */
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --accent: #d95f02;
+  --accent-hover: #b94d00;
+  --accent-soft: #fff3e8;
+  --accent-border: #f4a261;
+  --success: #10b981;
+  --error: #ef4444;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+  color: var(--text-main);
+}
+p {
+  color: var(--text-muted);
+}
