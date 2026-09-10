@@ -53,8 +53,8 @@ export default function Checkout({
     return (
       <div className="min-h-full bg-gray-50 flex items-center justify-center px-4">
         <div className="text-center max-w-md">
-          <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center text-4xl mx-auto mb-6">
-            <Icon name="check" size={32} className="text-green-600" />
+          <div className="w-20 h-20 rounded-full bg-gray-900 flex items-center justify-center text-4xl mx-auto mb-6">
+            <Icon name="check" size={32} className="text-white" />
           </div>
           <h1 className="text-2xl font-black text-gray-900 mb-2">
             Pedido confirmado!
@@ -123,9 +123,10 @@ export default function Checkout({
           {STEPS.map((s, i) => (
             <div key={s.key} className="flex items-center gap-2">
               <div
+                aria-current={i === stepIndex ? "step" : undefined}
                 className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
                   i < stepIndex
-                    ? "bg-green-500 text-white"
+                    ? "bg-gray-900 text-white"
                     : i === stepIndex
                       ? "text-white"
                       : "bg-gray-200 text-gray-400"
@@ -136,15 +137,17 @@ export default function Checkout({
               </div>
               <span
                 className={`text-xs font-medium hidden sm:block ${
-                  i === stepIndex ? "text-gray-800" : "text-gray-400"
+                  i === stepIndex ? "text-gray-800 font-bold" : "text-gray-400"
                 }`}
               >
                 {s.label}
+                {i < stepIndex && <span className="sr-only">, concluído</span>}
+                {i === stepIndex && <span className="sr-only">, etapa atual</span>}
               </span>
               {i < STEPS.length - 1 && (
                 <div
                   className={`h-px w-8 sm:w-16 ${
-                    i < stepIndex ? "bg-green-400" : "bg-gray-200"
+                    i < stepIndex ? "bg-gray-900" : "bg-gray-200"
                   }`}
                 />
               )}
@@ -209,7 +212,7 @@ export default function Checkout({
                             </p>
                             <button
                               onClick={() => onRemoveFromCart(item.id)}
-                              className="text-xs text-red-400 hover:text-red-600 mt-1 transition-colors"
+                              className="text-xs text-gray-600 hover:text-gray-900 mt-1 transition-colors underline underline-offset-2"
                             >
                               Remover
                             </button>
@@ -335,18 +338,21 @@ export default function Checkout({
                         <button
                           key={m}
                           onClick={() => setPayment(m)}
+                          aria-pressed={payment === m}
                           className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
                             payment === m
-                              ? "border-[var(--accent-border)] bg-[var(--accent-soft)]"
+                              ? "border-gray-900 bg-[var(--accent-soft)]"
                               : "border-gray-200 hover:border-gray-300"
                           }`}
                         >
                           <Icon name={icons[m]} size={24} />
-                          <span className="text-xs font-semibold text-gray-700">
+                          <span className="text-xs font-semibold text-gray-700 inline-flex items-center gap-1">
+                            {payment === m && <Icon name="check" size={12} className="text-gray-900" />}
                             {labels[m]}
                           </span>
                           {m === "pix" && (
-                            <span className="text-[9px] text-green-600 font-medium">
+                            <span className="text-[9px] text-gray-800 font-bold inline-flex items-center gap-0.5">
+                              <Icon name="check" size={10} className="text-gray-800" />
                               5% off
                             </span>
                           )}
@@ -369,7 +375,8 @@ export default function Checkout({
                           bzr@pix.com.br
                         </span>
                       </p>
-                      <p className="text-xs text-green-600 mt-2 font-medium">
+                      <p className="text-xs text-gray-800 mt-2 font-medium inline-flex items-center justify-center gap-1">
+                        <Icon name="check" size={14} className="text-gray-800" />
                         Desconto de 5% aplicado automaticamente
                       </p>
                     </div>
@@ -473,9 +480,10 @@ export default function Checkout({
 
                   <button
                     onClick={() => setStep("confirmado")}
-                    className="w-full py-3.5 rounded-xl font-bold text-white hover:opacity-90 transition-all"
+                    className="w-full py-3.5 rounded-xl font-bold text-white hover:opacity-90 transition-all inline-flex items-center justify-center gap-2"
                     style={{ background: "var(--accent)" }}
                   >
+                    <Icon name="lock" size={16} className="text-white" />
                     Confirmar pedido — {totalFmt}
                   </button>
 
@@ -525,8 +533,11 @@ export default function Checkout({
                   <span>{totalFmt}</span>
                 </div>
                 {payment === "pix" && step === "pagamento" && (
-                  <div className="flex justify-between text-xs text-green-600">
-                    <span>Desconto Pix (5%)</span>
+                  <div className="flex justify-between text-xs text-gray-800 font-medium">
+                    <span className="inline-flex items-center gap-1">
+                      <Icon name="check" size={12} className="text-gray-800" />
+                      Desconto Pix (5%)
+                    </span>
                     <span>
                       - R$ {Math.floor(total * 0.05).toLocaleString("pt-BR")}
                     </span>

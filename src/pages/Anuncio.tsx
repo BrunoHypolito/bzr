@@ -61,15 +61,108 @@ export default function Anuncio({ id, onBack, onAddToCart, onAddToFavorites, fav
                     <button
                       key={i}
                       onClick={() => setPhoto(i)}
-                      className={`w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${photo === i ? "border-[var(--accent-border)]" : "border-transparent"}`}
+                      aria-label={`Foto ${i + 1} de ${photos.length}`}
+                      aria-current={photo === i ? "true" : undefined}
+                      className={`relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${photo === i ? "border-gray-900 ring-2 ring-offset-1 ring-gray-900" : "border-gray-200 opacity-70"}`}
                     >
                       <img src={p} alt="" className="w-full h-full object-cover" />
+                      {photo === i && (
+                        <span className="absolute bottom-0.5 right-0.5 bg-gray-900 text-white rounded-full p-0.5">
+                          <Icon name="check" size={10} className="text-white" />
+                        </span>
+                      )}
                     </button>
                   ))}
                 </div>
               )}
             </div>
+          </div>
 
+          <aside className="space-y-4 lg:row-span-2">
+            <div className="bg-white rounded-2xl border border-gray-200 p-5 space-y-3 sticky top-24">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold" style={{ background: "var(--accent-soft)", color: "var(--accent-hover)" }}>
+                  {(item.seller ?? "V")[0]}
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-800 text-sm">{item.seller ?? "Vendedor"}</p>
+                  <div className="flex items-center gap-1 text-xs text-gray-400">
+                    <Icon name="star" className="text-gray-500" size={14} />
+                    <span>{item.sellerRating ?? 4.5}</span>
+                    <span className="text-gray-300">·</span>
+                    <span>Verificado</span>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={() => onAddToCart(item)}
+                className="w-full py-3 rounded-xl font-bold text-sm text-white transition-all hover:opacity-90 active:scale-95 inline-flex items-center justify-center gap-2"
+                style={{ background: "var(--accent)" }}
+              >
+                <Icon name="cart" size={16} className="text-white" />
+                Adicionar ao carrinho
+              </button>
+
+              <button
+                onClick={() => setMsgOpen(!msgOpen)}
+                className="w-full py-3 rounded-xl font-semibold text-sm border-2 transition-all hover:bg-gray-50"
+                style={{ borderColor: "var(--accent)", color: "var(--accent)" }}
+              >
+                Enviar mensagem
+              </button>
+
+              <button
+                onClick={() => onAddToFavorites(item)}
+                aria-pressed={isFav}
+                className={`w-full py-2.5 rounded-xl font-medium text-sm border transition-all ${
+                  isFav
+                    ? "bg-gray-900 border-gray-900 text-white"
+                    : "bg-gray-50 border-gray-200 text-gray-600 hover:border-gray-300"
+                }`}
+              >
+                <span className="flex items-center justify-center gap-2">
+                  <Icon name="heart" filled={isFav} className={isFav ? "text-white" : "text-gray-500"} />
+                  {isFav ? "Salvo nos favoritos" : "Salvar anúncio"}
+                </span>
+              </button>
+
+              {msgOpen && (
+                <div className="space-y-2 pt-1 border-t border-gray-100">
+                  {sent ? (
+                    <div className="text-center py-3">
+                      <p className="text-gray-900 font-semibold text-sm flex items-center justify-center gap-1"><Icon name="check" size={14} className="text-gray-900" /> Mensagem enviada!</p>
+                      <p className="text-xs text-gray-400 mt-1">O vendedor vai responder em breve.</p>
+                    </div>
+                  ) : (
+                    <>
+                      <textarea
+                        value={msg}
+                        onChange={(e) => setMsg(e.target.value)}
+                        placeholder="Olá, ainda está disponível?"
+                        className="w-full text-sm border border-gray-200 rounded-xl px-3 py-2 outline-none resize-none focus:border-[var(--accent-border)] transition-colors"
+                        rows={3}
+                      />
+                      <button
+                        onClick={handleSend}
+                        disabled={!msg.trim()}
+                        className="w-full py-2.5 rounded-xl font-semibold text-sm text-white transition-all disabled:opacity-40"
+                        style={{ background: "var(--accent)" }}
+                      >
+                        Enviar
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+
+              <p className="text-[10px] text-gray-300 text-center leading-relaxed">
+                Nunca pague antes de ver o produto.<br />Desconfie de propostas suspeitas.
+              </p>
+            </div>
+          </aside>
+
+          <div className="lg:col-span-2 space-y-6">
             <div className="bg-white rounded-2xl border border-gray-200 p-5 space-y-4">
               <div>
                 <p className="text-xs text-gray-400 uppercase tracking-wide font-medium mb-1">{item.category}</p>
@@ -124,85 +217,6 @@ export default function Anuncio({ id, onBack, onAddToCart, onAddToFavorites, fav
                 </div>
               </div>
             )}
-          </div>
-
-          <div className="space-y-4">
-            <div className="bg-white rounded-2xl border border-gray-200 p-5 space-y-3 sticky top-24">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold" style={{ background: "var(--accent-soft)", color: "var(--accent-hover)" }}>
-                  {(item.seller ?? "V")[0]}
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-800 text-sm">{item.seller ?? "Vendedor"}</p>
-                  <div className="flex items-center gap-1 text-xs text-gray-400">
-                    <Icon name="star" className="text-gray-500" size={14} />
-                    <span>{item.sellerRating ?? 4.5}</span>
-                    <span className="text-gray-300">·</span>
-                    <span>Verificado</span>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                onClick={() => onAddToCart(item)}
-                className="w-full py-3 rounded-xl font-bold text-sm text-white transition-all hover:opacity-90 active:scale-95"
-                style={{ background: "var(--accent)" }}
-              >
-                Adicionar ao carrinho
-              </button>
-
-              <button
-                onClick={() => setMsgOpen(!msgOpen)}
-                className="w-full py-3 rounded-xl font-semibold text-sm border-2 transition-all hover:bg-gray-50"
-                style={{ borderColor: "var(--accent)", color: "var(--accent)" }}
-              >
-                Enviar mensagem
-              </button>
-
-              <button
-                onClick={() => onAddToFavorites(item)}
-                className={`w-full py-2.5 rounded-xl font-medium text-sm border transition-all ${
-                  isFav 
-                    ? "bg-red-50 border-red-200 text-red-500" 
-                    : "bg-gray-50 border-gray-200 text-gray-500 hover:border-gray-300"
-                }`}
-              >
-                <span className="flex items-center justify-center gap-2"><Icon name="heart" className="text-gray-500" />{isFav ? "Salvo nos favoritos" : "Salvar anúncio"}</span>
-              </button>
-
-              {msgOpen && (
-                <div className="space-y-2 pt-1 border-t border-gray-100">
-                  {sent ? (
-                    <div className="text-center py-3">
-                      <p className="text-green-600 font-semibold text-sm flex items-center justify-center gap-1"><Icon name="check" size={14} className="text-green-600" /> Mensagem enviada!</p>
-                      <p className="text-xs text-gray-400 mt-1">O vendedor vai responder em breve.</p>
-                    </div>
-                  ) : (
-                    <>
-                      <textarea
-                        value={msg}
-                        onChange={(e) => setMsg(e.target.value)}
-                        placeholder="Olá, ainda está disponível?"
-                        className="w-full text-sm border border-gray-200 rounded-xl px-3 py-2 outline-none resize-none focus:border-[var(--accent-border)] transition-colors"
-                        rows={3}
-                      />
-                      <button
-                        onClick={handleSend}
-                        disabled={!msg.trim()}
-                        className="w-full py-2.5 rounded-xl font-semibold text-sm text-white transition-all disabled:opacity-40"
-                        style={{ background: "var(--accent)" }}
-                      >
-                        Enviar
-                      </button>
-                    </>
-                  )}
-                </div>
-              )}
-
-              <p className="text-[10px] text-gray-300 text-center leading-relaxed">
-                Nunca pague antes de ver o produto.<br />Desconfie de propostas suspeitas.
-              </p>
-            </div>
           </div>
         </div>
       </div>

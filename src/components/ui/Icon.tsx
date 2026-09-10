@@ -25,6 +25,9 @@ export type IconName =
   | "bolt"
   | "card"
   | "document"
+  | "grid"
+  | "list"
+  | "alert"
 
 const paths: Record<IconName, string> = {
   search: "M11 19a8 8 0 1 1 5.657-2.343L21 21M16.657 16.657 21 21",
@@ -51,21 +54,31 @@ const paths: Record<IconName, string> = {
   bolt: "m13 2-9 12h7l-1 8 9-12h-7l1-8Z",
   card: "M3 5h18v14H3zM3 10h18M7 15h4",
   document: "M6 3h9l3 3v15H6zM9 11h6m-6 4h6",
+  grid: "M3 3h8v8H3zM13 3h8v8h-8zM3 13h8v8H3zM13 13h8v8h-8z",
+  list: "M8 6h13M8 12h13M8 18h13M4 6h.01M4 12h.01M4 18h.01",
+  alert: "M12 3 2 21h20L12 3Zm0 6v6m0 3h.01",
 }
 
-export function Icon({ name, size = 18, className = "", ...props }: SVGProps<SVGSVGElement> & { name: IconName; size?: number }) {
+export function Icon({
+  name,
+  size = 18,
+  className = "",
+  filled = false,
+  ...props
+}: SVGProps<SVGSVGElement> & { name: IconName; size?: number; filled?: boolean }) {
+  const hasTextColor = /\btext-/.test(className)
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="none"
+      fill={filled ? "currentColor" : "none"}
       stroke="currentColor"
       strokeWidth="1.8"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
-      className={`text-gray-500 ${className}`}
+      className={`${hasTextColor ? "" : "text-gray-500"} ${className}`.trim()}
       {...props}
     >
       <path d={paths[name]} />

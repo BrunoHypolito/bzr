@@ -59,9 +59,11 @@ export default function Veiculos({ onSelect, onBack }: Props) {
                 <button
                   key={b}
                   onClick={() => setBrand(b)}
-                  className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors ${brand === b ? "font-semibold text-white" : "text-gray-600 hover:bg-gray-100"}`}
+                  aria-pressed={brand === b}
+                  className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors inline-flex items-center gap-2 ${brand === b ? "font-semibold text-white" : "text-gray-600 hover:bg-gray-100"}`}
                   style={brand === b ? { background: "var(--accent)" } : {}}
                 >
+                  {brand === b && <Icon name="check" size={14} className="text-white" />}
                   {b}
                 </button>
               ))}
@@ -75,9 +77,11 @@ export default function Veiculos({ onSelect, onBack }: Props) {
                 <button
                   key={y}
                   onClick={() => setYear(y)}
-                  className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors ${year === y ? "font-semibold text-white" : "text-gray-600 hover:bg-gray-100"}`}
+                  aria-pressed={year === y}
+                  className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors inline-flex items-center gap-2 ${year === y ? "font-semibold text-white" : "text-gray-600 hover:bg-gray-100"}`}
                   style={year === y ? { background: "var(--accent)" } : {}}
                 >
+                  {year === y && <Icon name="check" size={14} className="text-white" />}
                   {y}
                 </button>
               ))}
@@ -91,9 +95,11 @@ export default function Veiculos({ onSelect, onBack }: Props) {
                 <button
                   key={f}
                   onClick={() => setFuel(f)}
-                  className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors ${fuel === f ? "font-semibold text-white" : "text-gray-600 hover:bg-gray-100"}`}
+                  aria-pressed={fuel === f}
+                  className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors inline-flex items-center gap-2 ${fuel === f ? "font-semibold text-white" : "text-gray-600 hover:bg-gray-100"}`}
                   style={fuel === f ? { background: "var(--accent)" } : {}}
                 >
+                  {fuel === f && <Icon name="check" size={14} className="text-white" />}
                   {f}
                 </button>
               ))}
@@ -127,6 +133,7 @@ export default function Veiculos({ onSelect, onBack }: Props) {
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value)}
+                aria-label="Ordenar anúncios"
                 className="text-xs border border-gray-200 rounded-lg px-3 py-2 text-gray-600 outline-none cursor-pointer bg-white"
               >
                 <option value="relevancia">Mais relevantes</option>
@@ -136,17 +143,23 @@ export default function Veiculos({ onSelect, onBack }: Props) {
               <div className="flex border border-gray-200 rounded-lg overflow-hidden">
                 <button
                   onClick={() => setView("grid")}
-                  className={`px-3 py-2 text-xs transition-colors ${view === "grid" ? "text-white" : "text-gray-400 bg-white hover:bg-gray-50"}`}
+                  aria-label="Ver em grade"
+                  aria-pressed={view === "grid"}
+                  className={`px-3 py-2 text-xs transition-colors inline-flex items-center gap-1 ${view === "grid" ? "text-white" : "text-gray-500 bg-white hover:bg-gray-50"}`}
                   style={view === "grid" ? { background: "var(--accent)" } : {}}
                 >
-                  <Icon name="menu" size={16} />
+                  <Icon name="grid" size={16} className={view === "grid" ? "text-white" : "text-gray-500"} />
+                  <span className="sr-only sm:not-sr-only sm:inline">Grade</span>
                 </button>
                 <button
                   onClick={() => setView("list")}
-                  className={`px-3 py-2 text-xs transition-colors ${view === "list" ? "text-white" : "text-gray-400 bg-white hover:bg-gray-50"}`}
+                  aria-label="Ver em lista"
+                  aria-pressed={view === "list"}
+                  className={`px-3 py-2 text-xs transition-colors inline-flex items-center gap-1 ${view === "list" ? "text-white" : "text-gray-500 bg-white hover:bg-gray-50"}`}
                   style={view === "list" ? { background: "var(--accent)" } : {}}
                 >
-                  <Icon name="menu" size={16} />
+                  <Icon name="list" size={16} className={view === "list" ? "text-white" : "text-gray-500"} />
+                  <span className="sr-only sm:not-sr-only sm:inline">Lista</span>
                 </button>
               </div>
             </div>
@@ -179,12 +192,14 @@ export default function Veiculos({ onSelect, onBack }: Props) {
 
 function VehicleCard({ item, onSelect }: { item: Listing; onSelect: (id: number) => void }) {
   return (
-    <div
-      onClick={() => onSelect(item.id)}
-      className="bg-white rounded-xl border border-gray-200 overflow-hidden cursor-pointer hover:shadow-md hover:border-gray-300 transition-all duration-200 group"
-    >
+    <article className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:border-gray-300 transition-all duration-200 group">
       <div className="relative overflow-hidden h-44 bg-gray-100">
-        <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+        <img
+          src={item.img}
+          alt=""
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
+          onClick={() => onSelect(item.id)}
+        />
         {item.tag && (
           <span className={`absolute top-2 left-2 ${item.tagColor} text-white text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wide`}>
             {item.tag}
@@ -192,7 +207,15 @@ function VehicleCard({ item, onSelect }: { item: Listing; onSelect: (id: number)
         )}
       </div>
       <div className="p-3 space-y-1">
-        <p className="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">{item.title}</p>
+        <h2>
+          <button
+            type="button"
+            onClick={() => onSelect(item.id)}
+            className="text-left text-sm font-semibold text-gray-800 leading-snug line-clamp-2 w-full"
+          >
+            {item.title}
+          </button>
+        </h2>
         <p className="text-lg font-bold" style={{ color: "var(--accent)" }}>{item.price}</p>
         <div className="flex gap-2 text-[11px] text-gray-400">
           {item.year && <span>{item.year}</span>}
@@ -201,18 +224,20 @@ function VehicleCard({ item, onSelect }: { item: Listing; onSelect: (id: number)
         </div>
         <p className="text-xs text-gray-400 flex items-center gap-1"><Icon name="location" size={13} />{item.location}</p>
       </div>
-    </div>
+    </article>
   );
 }
 
 function VehicleListRow({ item, onSelect }: { item: Listing; onSelect: (id: number) => void }) {
   return (
-    <div
-      onClick={() => onSelect(item.id)}
-      className="bg-white rounded-xl border border-gray-200 overflow-hidden cursor-pointer hover:shadow-md transition-all duration-200 flex group"
-    >
+    <article className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200 flex group">
       <div className="relative overflow-hidden w-48 flex-shrink-0 bg-gray-100">
-        <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+        <img
+          src={item.img}
+          alt=""
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
+          onClick={() => onSelect(item.id)}
+        />
         {item.tag && (
           <span className={`absolute top-2 left-2 ${item.tagColor} text-white text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wide`}>
             {item.tag}
@@ -221,7 +246,15 @@ function VehicleListRow({ item, onSelect }: { item: Listing; onSelect: (id: numb
       </div>
       <div className="p-4 flex-1 flex justify-between items-start">
         <div className="space-y-1">
-          <p className="font-semibold text-gray-800">{item.title}</p>
+          <h2>
+            <button
+              type="button"
+              onClick={() => onSelect(item.id)}
+              className="text-left font-semibold text-gray-800"
+            >
+              {item.title}
+            </button>
+          </h2>
           <div className="flex gap-3 text-xs text-gray-400">
             {item.year && <span className="flex items-center gap-1"><Icon name="calendar" size={13} /> {item.year}</span>}
             {item.km && <span className="flex items-center gap-1"><Icon name="road" size={13} /> {item.km}</span>}
@@ -234,6 +267,6 @@ function VehicleListRow({ item, onSelect }: { item: Listing; onSelect: (id: numb
           <p className="text-xl font-bold" style={{ color: "var(--accent)" }}>{item.price}</p>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
