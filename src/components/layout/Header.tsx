@@ -33,6 +33,7 @@ export function Header({ page, cart, favorites, onNavigate, onCart, onFavorites,
         <button
           onClick={() => onNavigate({ name: "home" })}
           className="flex-shrink-0 flex items-center gap-2"
+          aria-label="BZR, ir para a página inicial"
         >
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-[11px] tracking-widest"
@@ -66,11 +67,12 @@ export function Header({ page, cart, favorites, onNavigate, onCart, onFavorites,
             <input
               type="text"
               placeholder="O que você está procurando?"
+              aria-label="Buscar anúncios"
               className="flex-1 px-3 py-2.5 text-sm outline-none bg-transparent text-gray-800 placeholder-gray-400"
               onFocus={() => setSearchFocused(true)}
               onBlur={() => setSearchFocused(false)}
             />
-            <select className="pr-3 pl-2 py-2.5 text-sm text-gray-500 bg-transparent border-l border-gray-200 outline-none cursor-pointer">
+            <select aria-label="Localização" className="pr-3 pl-2 py-2.5 text-sm text-gray-500 bg-transparent border-l border-gray-200 outline-none cursor-pointer">
               <option>Brasil</option>
               <option>São Paulo</option>
               <option>Rio de Janeiro</option>
@@ -85,6 +87,7 @@ export function Header({ page, cart, favorites, onNavigate, onCart, onFavorites,
             onClick={onFavorites}
             className="relative p-2.5 rounded-xl text-gray-500 hover:bg-gray-100 transition-colors"
             title="Favoritos"
+            aria-label={favorites.length > 0 ? `Favoritos, ${favorites.length} salvos` : "Favoritos"}
           >
             <Icon name="heart" className="text-gray-500" />
             {favorites.length > 0 && (
@@ -101,6 +104,7 @@ export function Header({ page, cart, favorites, onNavigate, onCart, onFavorites,
             onClick={onCart}
             className="relative p-2.5 rounded-xl text-gray-500 hover:bg-gray-100 transition-colors"
             title="Carrinho"
+            aria-label={cart.length > 0 ? `Carrinho, ${cart.length} itens` : "Carrinho"}
           >
             <Icon name="cart" className="text-gray-500" />
             {cart.length > 0 && (

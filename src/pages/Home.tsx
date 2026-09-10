@@ -38,9 +38,11 @@ export default function Home({ onNavigate, onAddToCart, onAddToFavorites, favori
             <input 
               type="text" 
               placeholder="Conte-nos o que você busca..." 
+              aria-label="Buscar anúncios"
               className="flex-1 bg-transparent outline-none px-4 text-sm text-gray-700 placeholder-gray-400"
             />
-            <button className="px-8 py-3 rounded-full text-white font-bold transition hover:opacity-90" style={{ backgroundColor: "var(--accent)" }}>
+            <button className="px-8 py-3 rounded-full text-white font-bold transition hover:opacity-90 inline-flex items-center gap-2" style={{ backgroundColor: "var(--accent)" }}>
+              <Icon name="search" size={18} className="text-white" />
               Buscar
             </button>
           </div>

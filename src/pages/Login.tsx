@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Icon } from "../components/ui/Icon";
 
 type LoginProps = {
   onLogin: () => void;
@@ -27,8 +28,8 @@ export default function Login({ onLogin, onBack, onRegister }: LoginProps) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <div className="w-full max-w-md bg-white rounded-2xl border border-gray-200 shadow-sm p-8 text-center">
-          <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
-            <span className="text-green-600 text-2xl font-bold">OK</span>
+          <div className="w-14 h-14 rounded-full bg-gray-900 flex items-center justify-center mx-auto mb-5">
+            <Icon name="check" size={28} className="text-white" />
           </div>
           <h1 className="text-2xl font-black text-gray-900">Conta conectada</h1>
           <p className="text-sm text-gray-500 mt-2">Você entrou na sua conta com sucesso.</p>
@@ -61,10 +62,11 @@ export default function Login({ onLogin, onBack, onRegister }: LoginProps) {
         {/* Dados de acesso do usuário. */}
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+            <label htmlFor="login-email" className="block text-sm font-semibold text-gray-700 mb-1.5">
               E-mail
             </label>
             <input
+              id="login-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -75,10 +77,11 @@ export default function Login({ onLogin, onBack, onRegister }: LoginProps) {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+            <label htmlFor="login-password" className="block text-sm font-semibold text-gray-700 mb-1.5">
               Senha
             </label>
             <input
+              id="login-password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -95,7 +98,8 @@ export default function Login({ onLogin, onBack, onRegister }: LoginProps) {
 
           {/* Mensagem exibida quando os dados obrigatórios não foram preenchidos */}
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 text-xs font-medium px-4 py-3 rounded-xl">
+            <div role="alert" className="bg-gray-100 border border-gray-300 text-gray-800 text-xs font-medium px-4 py-3 rounded-xl inline-flex items-start gap-2 w-full">
+              <Icon name="alert" size={16} className="text-gray-800 flex-shrink-0 mt-0.5" />
               {error}
             </div>
           )}

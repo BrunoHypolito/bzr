@@ -70,7 +70,15 @@ export default function Favoritos({ items, onSelect, onRemove, onBack, onAddToCa
                       onClick={() => onSelect(item.id)}
                     >
                       <p className="text-xs text-gray-400 uppercase tracking-wide font-medium">{item.category}</p>
-                      <p className="font-semibold text-gray-800 leading-snug">{item.title}</p>
+                      <h2>
+                        <button
+                          type="button"
+                          onClick={() => onSelect(item.id)}
+                          className="text-left font-semibold text-gray-800 leading-snug"
+                        >
+                          {item.title}
+                        </button>
+                      </h2>
                       <p className="text-xl font-black" style={{ color: "var(--accent)" }}>{item.price}</p>
                       <div className="flex items-center gap-3 text-xs text-gray-400 pt-1">
                         <span className="flex items-center gap-1"><Icon name="location" size={13} /> {item.location}</span>
@@ -83,14 +91,15 @@ export default function Favoritos({ items, onSelect, onRemove, onBack, onAddToCa
                     <div className="flex flex-col gap-2 flex-shrink-0">
                       <button
                         onClick={() => onAddToCart(item)}
-                        className="px-4 py-2 rounded-xl font-bold text-xs text-white transition-all hover:opacity-90 whitespace-nowrap"
+                        className="px-4 py-2 rounded-xl font-bold text-xs text-white transition-all hover:opacity-90 whitespace-nowrap inline-flex items-center justify-center gap-1"
                         style={{ background: "var(--accent)" }}
                       >
-                        + Carrinho
+                        <Icon name="cart" size={14} className="text-white" />
+                        Carrinho
                       </button>
                       <button
                         onClick={() => onRemove(item.id)}
-                        className="px-4 py-2 rounded-xl font-medium text-xs text-red-400 border border-red-200 hover:bg-red-50 transition-colors whitespace-nowrap"
+                        className="px-4 py-2 rounded-xl font-medium text-xs text-gray-700 border border-gray-300 hover:bg-gray-100 transition-colors whitespace-nowrap inline-flex items-center justify-center gap-1"
                       >
                         Remover
                       </button>

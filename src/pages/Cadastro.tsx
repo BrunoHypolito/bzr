@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Icon } from "../components/ui/Icon"
 
 type CadastroProps = {
   onRegister: () => void
@@ -26,8 +27,8 @@ export default function Cadastro({ onRegister, onBack }: CadastroProps) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <div className="w-full max-w-md bg-white rounded-2xl border border-gray-200 shadow-sm p-8 text-center">
-          <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
-            <span className="text-green-600 text-2xl font-bold">OK</span>
+          <div className="w-14 h-14 rounded-full bg-gray-900 flex items-center justify-center mx-auto mb-5">
+            <Icon name="check" size={28} className="text-white" />
           </div>
           <h1 className="text-2xl font-black text-gray-900">Conta criada</h1>
           <p className="text-sm text-gray-500 mt-2">Seu cadastro foi concluído. Agora você pode entrar na sua conta.</p>
@@ -56,8 +57,9 @@ export default function Cadastro({ onRegister, onBack }: CadastroProps) {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Nome</label>
+            <label htmlFor="cadastro-nome" className="block text-sm font-semibold text-gray-700 mb-1.5">Nome</label>
             <input
+              id="cadastro-nome"
               type="text"
               value={name}
               onChange={(event) => setName(event.target.value)}
@@ -67,8 +69,9 @@ export default function Cadastro({ onRegister, onBack }: CadastroProps) {
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">E-mail</label>
+            <label htmlFor="cadastro-email" className="block text-sm font-semibold text-gray-700 mb-1.5">E-mail</label>
             <input
+              id="cadastro-email"
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
@@ -78,8 +81,9 @@ export default function Cadastro({ onRegister, onBack }: CadastroProps) {
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Senha</label>
+            <label htmlFor="cadastro-senha" className="block text-sm font-semibold text-gray-700 mb-1.5">Senha</label>
             <input
+              id="cadastro-senha"
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
@@ -89,7 +93,12 @@ export default function Cadastro({ onRegister, onBack }: CadastroProps) {
             />
           </div>
 
-          {error && <div className="bg-red-50 border border-red-200 text-red-600 text-xs font-medium px-4 py-3 rounded-xl">{error}</div>}
+          {error && (
+            <div role="alert" className="bg-gray-100 border border-gray-300 text-gray-800 text-xs font-medium px-4 py-3 rounded-xl inline-flex items-start gap-2 w-full">
+              <Icon name="alert" size={16} className="text-gray-800 flex-shrink-0 mt-0.5" />
+              {error}
+            </div>
+          )}
 
           <button
             type="submit"
